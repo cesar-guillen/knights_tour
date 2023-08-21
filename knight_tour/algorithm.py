@@ -101,8 +101,12 @@ def algorithm():
     start_square_y = user_input_column
     board_game[start_square_x][start_square_y] = 0
     move_list.append(start_square)
-    if(move_list[-1] == start_square or DIMENSIONS < 5):
-        print("There exists no knights tour from this square or board size. ")
+    if DIMENSIONS < 5:
+        print("There exists no knight's tour with a board size of less than five. ")
         return False
     find_path(start_square_x,start_square_y)
+    if(move_list[-1] == start_square):
+        print("There exists no knight's tour from this square. ")
+        return False
+    
     return True
