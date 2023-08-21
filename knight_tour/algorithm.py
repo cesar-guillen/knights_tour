@@ -93,7 +93,7 @@ def algorithm():
     user_input_row = int(input("Please enter the starting row for the knight: "))
     
 
-    if user_input_column < 0 or user_input_column > DIMENSIONS or user_input_row <0 or user_input_row > DIMENSIONS:
+    if user_input_column < 0 or user_input_column >= DIMENSIONS or user_input_row <0 or user_input_row >= DIMENSIONS:
         print("Enter a valid coordinate.")
         return False
     start_square = [user_input_row, user_input_column]
