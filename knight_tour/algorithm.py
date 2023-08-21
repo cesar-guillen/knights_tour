@@ -34,19 +34,19 @@ def is_valid(x,y, move):
 def find_path(x,y):
     global moves_made
     global board_game
-    moves_reamaning = legal_moves
+    moves_remaining = legal_moves
     if(moves_made >=(DIMENSIONS*DIMENSIONS)-1):
         if(moves_made == (DIMENSIONS*DIMENSIONS)-1):
             print_board()
         return True
 
-    move = choose_move(x,y,moves_reamaning)
+    move = choose_move(x,y,moves_remaining)
     if move is None:
         return False
     x += move[1]
     y += move[0]
     moves_made += 1
-    moves_reamaning = [item for item in moves_reamaning if item != move]
+    moves_remaining = [item for item in moves_remaining if item != move]
     board_game[x][y] = moves_made
     move_list.append([x,y])
     if (find_path(x,y)):
@@ -62,15 +62,15 @@ def restore(x,y):
     update = move_list[-1]
     x = update[0]
     y = update[1]
-    moves_reamaning.append(move)
+    moves_remaining.append(move)
     moves_made-=1
 
 
 #this fucntion helps choose the best move, using Warnsdorff's rule we prioritize the square that leaves the knight with the fewest legal moves.
-def choose_move(x,y,moves_reamaning):
+def choose_move(x,y,moves_remaining):
     best_move = None
     allowed_moves = 100
-    for move in moves_reamaning:
+    for move in moves_remaining:
         if(is_valid(x,y,move)):
             temp = legal_moves_left(x,y,move)
             if temp < allowed_moves:
@@ -101,8 +101,8 @@ def algorithm():
     start_square_y = user_input_column
     board_game[start_square_x][start_square_y] = 0
     move_list.append(start_square)
-    find_path(start_square_x,start_square_y)
     if(move_list[-1] == start_square or DIMENSIONS < 5):
-        print("There exists no knights tour from this square")
+        print("There exists no knights tour from this square or board size. ")
         return False
+    find_path(start_square_x,start_square_y)
     return True
