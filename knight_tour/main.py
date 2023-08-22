@@ -7,9 +7,13 @@ import sys
 
 new_recursion_limit = 3000  # Set the new recursion limit here
 sys.setrecursionlimit(new_recursion_limit)
-WIDTH = HEIGHT = 600
 DIMENSIONS = board.DIMENSIONS
-SQ_SIZE = HEIGHT//DIMENSIONS
+min_window_size = 550
+max_window_size = 650
+for window_size in range(min_window_size, max_window_size + 1):
+    if window_size % DIMENSIONS == 0:
+        break
+SQ_SIZE = window_size//DIMENSIONS
 MAX_FPS = 60
 IMAGE = {}
 IMAGE["wN"] = p.transform.scale(p.image.load("images/wN.png") , (SQ_SIZE,SQ_SIZE))
@@ -23,12 +27,12 @@ def main():
     global end_sfx
     p.init()
     p.mixer.init()
-    new_window_title = "Knights tour"
+    new_window_title = "Knight's tour"
     p.display.set_caption(new_window_title)
     move_sfx = p.mixer.Sound("sounds/move-self.mp3")
     end_sfx = p.mixer.Sound("sounds/Checkmate.mp3")
     running = algorithm.algorithm()
-    screen = p.display.set_mode((WIDTH, HEIGHT))
+    screen = p.display.set_mode((window_size, window_size))
     clock = p.time.Clock()
     screen.fill(p.Color("white"))
     gs = board.game_state()
