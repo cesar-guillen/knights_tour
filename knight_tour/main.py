@@ -5,8 +5,7 @@ import time
 import algorithm
 import sys
 
-new_recursion_limit = 3000  # Set the new recursion limit here
-sys.setrecursionlimit(new_recursion_limit)
+
 DIMENSIONS = board.DIMENSIONS
 min_window_size = 550
 max_window_size = 650
@@ -21,10 +20,12 @@ move_sfx = None
 end_sfx = None
 end = False
 current = 0
+speed = None
 
 def main():
     global move_sfx
     global end_sfx
+    global speed
     p.init()
     p.mixer.init()
     new_window_title = "Knight's tour"
@@ -32,6 +33,7 @@ def main():
     move_sfx = p.mixer.Sound("sounds/move-self.mp3")
     end_sfx = p.mixer.Sound("sounds/Checkmate.mp3")
     running = algorithm.algorithm()
+    speed = int(input("Enter a number between 0 and 1 to change the animation speed: "))
     screen = p.display.set_mode((window_size, window_size))
     clock = p.time.Clock()
     screen.fill(p.Color("white"))
@@ -70,6 +72,7 @@ def draw_pieces(screen, board):
     global move_sfx
     global end_sfx
     global end
+    global speed
     
     current_move = algorithm.move_list[current]
     board[current_move[1]][current_move[0]] = "wN"
@@ -79,7 +82,7 @@ def draw_pieces(screen, board):
             if knight == "wN":
                 screen.blit(IMAGE["wN"], p.Rect(r*SQ_SIZE,c*SQ_SIZE,SQ_SIZE,SQ_SIZE))
     board[current_move[1]][current_move[0]] = "-+"
-    time.sleep(0.2)
+    time.sleep(speed)
     if current < len(algorithm.move_list) -1:
         current+=1
         if(current >= 2):
