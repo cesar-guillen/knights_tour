@@ -7,6 +7,7 @@ move_list = []
 legal_moves = [[2,1], [1,2],[-1,2],[-2,1],[-2,-1],[-1,-2],[1,-2],[2,-1]]
 start_square_x = None;
 start_square_y = None;
+moves_remaining = []
 
 
 
@@ -34,6 +35,7 @@ def is_valid(x,y, move):
 def find_path(x,y):
     global moves_made
     global board_game
+    global moves_remaining
     moves_remaining = legal_moves
     if(moves_made >=(DIMENSIONS*DIMENSIONS)-1):
         if(moves_made == (DIMENSIONS*DIMENSIONS)-1):
@@ -51,10 +53,11 @@ def find_path(x,y):
     move_list.append([x,y])
     if (find_path(x,y)):
         return True
-    restore(x,y)
+    restore(x,y,move)
 
 #restores the previous data after doing a wrong move that lead to no solution -- backtracking
-def restore(x,y):
+def restore(x,y,move):
+    global moves_remaining
     global board_game
     global moves_made
     board_game[x][y] = -1
@@ -89,11 +92,11 @@ def legal_moves_left(x,y,move):
     return total
 
 def algorithm():
-    user_input_column = int(input("\nPlease enter the starting column for the knight: ")) 
-    user_input_row = int(input("Please enter the starting row for the knight: "))
+    user_input_column = int(input("Please enter the starting column for the knight: ")) - 1
+    user_input_row = DIMENSIONS- int(input("Please enter the starting row for the knight: "))
     
 
-    if user_input_column < 0 or user_input_column >= DIMENSIONS or user_input_row <0 or user_input_row >= DIMENSIONS:
+    if user_input_column < 0 or user_input_column >= DIMENSIONS or user_input_row < 0 or user_input_row >= DIMENSIONS:
         print("Enter a valid coordinate.")
         return False
     start_square = [user_input_row, user_input_column]
