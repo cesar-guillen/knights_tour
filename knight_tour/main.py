@@ -5,7 +5,8 @@ import time
 import algorithm
 import sys
 
-
+new_recursion_limit = 2500  # Set the new recursion limit here
+sys.setrecursionlimit(new_recursion_limit)
 DIMENSIONS = board.DIMENSIONS
 min_window_size = 550
 max_window_size = 650
@@ -32,22 +33,26 @@ def main():
     p.display.set_caption(new_window_title)
     move_sfx = p.mixer.Sound("sounds/move-self.mp3")
     end_sfx = p.mixer.Sound("sounds/Checkmate.mp3")
-    running = algorithm.algorithm()
-    speed = int(input("Enter a number between 0 and 1 to change the animation speed: "))
-    screen = p.display.set_mode((window_size, window_size))
-    clock = p.time.Clock()
-    screen.fill(p.Color("white"))
-    gs = board.game_state()
-    while running:
-        for e in p.event.get():
-            if e.type == p.QUIT:
-                running = False
+    if algorithm.algorithm():
+        running = True
+        speed = float(input("Enter a number between 0 and 1 to change the animation speed: "))
+        if speed < 0:
+            print("Please enter a positive number. ")
+            running = False
+        screen = p.display.set_mode((window_size, window_size))
+        clock = p.time.Clock()
+        screen.fill(p.Color("white"))
+        gs = board.game_state()
+        while running:
+            for e in p.event.get():
+                if e.type == p.QUIT:
+                    running = False
 
-        draw_game_state(screen, gs)
-        clock.tick(MAX_FPS)
-        p.display.flip()
+            draw_game_state(screen, gs)
+            clock.tick(MAX_FPS)
+            p.display.flip()
 
-    p.quit()  # Quit Pygame when done
+        p.quit()  # Quit Pygame when done
 
 
 def draw_game_state(screen, gs):
